@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'store',
-    
     'rest_framework',
-    'django_filters'
+    'django_filters',
+    'social_django',
+
+    'store',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'books.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +71,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKEND = [
+    'social_django.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 WSGI_APPLICATION = 'books.wsgi.application'
@@ -83,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'books_db',
         'USER': 'caesar',
-        'PASSWORD': 'password123',
+        'PASSWORD': 'Skycrow123',
         'HOST': 'localhost',
         'PORT': '5432'
     }
@@ -108,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -121,6 +128,10 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+SOCIAL_AUTH_GITHUB_KEY = 'c9f590ff5cf522bba89c'
+SOCIAL_AUTH_GITHUB_SECRET = 'e374a8c63ed854ba0c970c9f743280eb0d6bdf31'
 
 
 # Static files (CSS, JavaScript, Images)

@@ -1,4 +1,7 @@
+import json
+
 from django.urls import reverse
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -8,6 +11,9 @@ from store.serializers import BookSerializer
 
 class BooksAPITestCase(APITestCase):
     def setUp(self) -> None:
+        self.user = User.objects.create(
+            username='test User',
+        )
         self.url = reverse('book-list')
         Book.objects.create(
             title='Test Book',
@@ -51,3 +57,15 @@ class BooksAPITestCase(APITestCase):
         serializer_data = BookSerializer([self.book1, self.book2, self.book3], many=True).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(serializer_data, response.data)
+    
+    def test_create(self):
+        data = {
+            'name': 'Some Test Book',
+            'price': '100',
+            'author_name': 'Some Author name'
+        }
+        json_data = json.dumps(data)
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data=json_data, 
+                                            content_type='application/json')
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
